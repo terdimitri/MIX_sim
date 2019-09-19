@@ -14,6 +14,26 @@ struct ShortWord {
 
 enum CompState {GREATER, EQUAL, LESS};
 
+struct Field {
+    unsigned char start;
+    unsigned char stop;
+    bool has_sign;
+};
+
+Field fromF(unsigned char F) {
+    // Knuth's Word |1|2|3|4|5|
+    // My Word      |4|3|2|1|0|
+    Field out;
+    out.start = 5 - F % 8;
+    unsigned char stop = 5 - F / 8;
+    if (stop == 5) {
+        out.has_sign = true;
+        stop = 4;
+    }
+    out.stop = stop;
+    return out;
+}
+
 long int interpret(Word word) {
     long int out = 0;
     int i = 0;
@@ -36,6 +56,8 @@ long int interpret(ShortWord word) {
     return out;
 }
 
+
+
 int main() {
     Word memory[MEM_SIZE];
     CompState comp_ind;
@@ -49,18 +71,57 @@ int main() {
     unsigned char C, I, F;
     int M;
     while (pointer > MEM_SIZE) {
+        break;
         C = memory[pointer].bytes[4];
         F = memory[pointer].bytes[3];
         I = memory[pointer].bytes[2];
-        M = memory[pointer].bytes[0] << BYTE_SIZE + memory[pointer].bytes[1];
+        M = (int) memory[pointer].bytes[0] << BYTE_SIZE + memory[pointer].bytes[1];
         if (memory[pointer].sign) {M *= -1;}
 
         if (I != 0) {
             M += interpret(rI[I-1]);
         }
+
+        switch (C) {
+            case 0:
+                break;
+            case 1:
+                // add
+                break;
+            case 2:
+                // sub
+                break;
+            case 3:
+                // mul
+                break;
+            case 4:
+                // div
+                break;
+            case 5:
+                if (F == 0) {
+                    // num
+                } else if (F == 1) {
+                    // char
+                } else if (F == 2) {
+                    // hlt
+                }
+                break;
+            case 6:
+                // shifts
+                break;
+            case 7:
+                // move
+                break;
+        }
     }
+    
+    Field f = fromF(13);
+    std::cout << "start: " << (int) f.start << "\nstop: " << (int) f.stop << "\nsign: " << f.has_sign << "\n";
+
+    memory[0].bytes[2] = 1;
+    rA = memory[0];
     memory[0] = {{12, 1, 0, 0, 0}, true};
     std::cout << "memory 0: " << interpret(memory[0]) << "\n";
-    std::cout << "rJ sign state: " << rJ.sign << "\n";
+    std::cout << "register A: " << interpret(rA) << "\n";
     return 0;
 }
