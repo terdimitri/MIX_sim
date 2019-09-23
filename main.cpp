@@ -70,8 +70,10 @@ int main() {
     int pointer = 0;
     unsigned char C, I, F;
     int M;
+
     Field field;
     int r_num;
+    int i, j;
 
     while (pointer > MEM_SIZE) {
         break;
@@ -140,8 +142,10 @@ int main() {
                 // J[*]
                 break;
             default:
+                r_num = C % 8;
                 if (8 <= C && C <= 23) {
                     // Load
+                    for ()
                 } else if (24 <= C && C <= 31) {
                     // Store
                 } else if (40 <= C && C <= 32) {
