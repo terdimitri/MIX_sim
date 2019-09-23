@@ -70,6 +70,9 @@ int main() {
     int pointer = 0;
     unsigned char C, I, F;
     int M;
+    Field field;
+    int r_num;
+
     while (pointer > MEM_SIZE) {
         break;
         C = memory[pointer].bytes[4];
@@ -111,6 +114,43 @@ int main() {
                 break;
             case 7:
                 // move
+                break;
+            case 32:
+                // STJ
+                break;
+            case 33:
+                // STZ
+                break;
+            case 34:
+                // JBUS
+                break;
+            case 35:
+                // IOC
+                break;
+            case 36:
+                // IN
+                break;
+            case 37:
+                // OUT
+                break;
+            case 38:
+                // JRED
+                break;
+            case 39:
+                // J[*]
+                break;
+            default:
+                if (8 <= C && C <= 23) {
+                    // Load
+                } else if (24 <= C && C <= 31) {
+                    // Store
+                } else if (40 <= C && C <= 32) {
+                    // Jump
+                } else if (48 <= C && C <= 55) {
+                    // Inc and Ent
+                } else if (56 <= C && C <= 63) {
+                    // Compare
+                }
                 break;
         }
     }
