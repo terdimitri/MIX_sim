@@ -18,21 +18,18 @@ struct Field {
     unsigned char start;
     unsigned char stop;
     bool has_sign;
-};
-
-Field fromF(unsigned char F) {
-    // Knuth's Word |1|2|3|4|5|
-    // My Word      |4|3|2|1|0|
-    Field out;
-    out.start = 5 - F % 8;
-    unsigned char stop = 5 - F / 8;
-    if (stop == 5) {
-        out.has_sign = true;
-        stop = 4;
+    Field(unsigned char F) {
+        start = 5-F % 8;
+        stop = 5 - F / 8;
+        if (stop == 5) {
+            has_sign = true;
+            stop = 4;
+        }
     }
-    out.stop = stop;
-    return out;
-}
+    int length() {
+        return stop - start + 1;
+    }
+};
 
 long int interpret(Word word) {
     long int out = 0;
@@ -71,7 +68,7 @@ int main() {
     unsigned char C, I, F;
     int M;
 
-    Field field;
+    Field field = Field(5);
     int r_num;
     int i, j;
 
@@ -143,23 +140,24 @@ int main() {
                 break;
             default:
                 r_num = C % 8;
-                if (8 <= C && C <= 23) {
-                    // Load
-                    for ()
-                } else if (24 <= C && C <= 31) {
-                    // Store
-                } else if (40 <= C && C <= 32) {
-                    // Jump
-                } else if (48 <= C && C <= 55) {
-                    // Inc and Ent
-                } else if (56 <= C && C <= 63) {
-                    // Compare
+                if (56 <= C && C <= 63) {
+                    // Inc, Ent
+                } else {
+                    if (8 <= C && C <= 23) {
+                        //Load
+                    } else if (24 <= C && C <= 31) {
+                        // Store
+                    } else if (40 <= C && C <= 32) {
+                        // Jump r?
+                    } else if (56 <= C && C <= 63) {
+                        // Compare
+                    }
                 }
                 break;
         }
     }
     
-    Field f = fromF(13);
+    Field f = Field(13);
     std::cout << "start: " << (int) f.start << "\nstop: " << (int) f.stop << "\nsign: " << f.has_sign << "\n";
 
     memory[0].bytes[2] = 1;
